@@ -1,0 +1,60 @@
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import yahoo_finance as yf
+import READ_CSV as rc
+import csv
+
+
+Companies = rc.READ_CSV('Companies.csv')
+
+
+tickers = []
+Name = []
+LastSale = []
+MarketCap = []
+IPOyear = []
+Sector = []
+Industry = []
+Summaryquote = []
+
+
+##  SORTING COMPANIES
+for i in Companies:
+    tickers.append(i[0])
+    Name.append(i[1])
+    LastSale.append(i[2])
+    MarketCap.append(i[3])
+    IPOyear.append(i[4])
+    Sector.append(i[5])
+    Industry.append(i[6])
+    Summaryquote.append(i[7])
+
+
+## CREATING DATAFRAME OF COMPANIES
+DFcomp = pd.DataFrame({'Ticker': tickers,'Name': Name,'Last Sale': LastSale,
+                        'MarketCap': MarketCap, 'IPOyear': IPOyear,
+                        'Sector': Sector, 'Industry': Industry,
+                        'Summaryquote': Summaryquote})
+
+## SORTING DATAFRAME AFTER ITEM 'SECTOR'
+Sectorwise = DFcomp.groupby('Sector')['Ticker'].apply(list)
+
+Bsc_ind = Sectorwise['Basic Industries']
+
+
+
+
+start = '2014-04-17'
+end = '2014-04-25'
+
+
+## DOWNLOADS ALL SHARE INFO FOR THE COMPANIES IN THE ABOVE SPECIFIED SECTOR???
+Bsc_ind_shares = []
+for stck in Bsc_ind:
+    Bsc_ind_shares.append(yf.Share(stck))
+
+
+
