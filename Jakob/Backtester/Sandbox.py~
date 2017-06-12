@@ -1,0 +1,31 @@
+#from yahoo_finance import Share
+import matplotlib.pyplot as plt
+import pandas as pd
+
+import pandas_datareader as pdr
+import datetime
+import datetime
+import numpy as np
+from statsmodels.tsa.ar_model import AR
+from statsmodels.tsa.arima_model import ARIMA
+import statsmodels.tsa.arima_process as ap
+from statsmodels.stats.diagnostic import acorr_ljungbox
+from statsmodels.tsa.stattools import acf
+from arch import arch_model
+from contextlib import contextmanager
+import sys, os
+import requests
+from requests.packages.urllib3.exceptions import InsecurePlatformWarning
+requests.packages.urllib3.disable_warnings(InsecurePlatformWarning)
+
+
+start = datetime.datetime(2016, 1, 15)
+end = datetime.datetime(2017, 4, 1)
+ticker='GOOG'
+
+goog=pdr.get_data_yahoo(ticker,start,end)
+
+#yahoo=Share('YHOO')
+
+#print yahoo.get_trade_datetime()
+#print yahoo.get_historical('2014-04-25', '2014-04-29')
