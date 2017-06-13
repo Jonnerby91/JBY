@@ -3,6 +3,7 @@ import os, os.path
 import pandas as pd
 from abc import ABCMeta, abstractmethod
 from Event import MarketEvent
+from Event import Event
 import quandl 
 quandl.ApiConfig.api_key = '4ZyHzmP1Hp73xkygPzzL'
 
@@ -53,14 +54,14 @@ class HistoricDataHandler(DataHandler):
                 # Load the CSV file with no header information, indexed on date
                 self.symbol_data[s] = quandl.get("WIKI/"+s,start_date='2014-10-10',end_date=date)
 
-            # Combine the index to pad forward values
-            if comb_index is None:
-                comb_index = self.symbol_data[s].index
-            else:
-                comb_index.union(self.symbol_data[s].index)
+                # Combine the index to pad forward values
+                if comb_index is None:
+                    comb_index = self.symbol_data[s].index
+                else:
+                    comb_index.union(self.symbol_data[s].index)
 
-            # Set the latest symbol_data to None
-            self.latest_symbol_data[s] = []
+                # Set the latest symbol_data to None
+                self.latest_symbol_data[s] = []
 
             # Reindex the dataframes
             for s in self.symbol_list:
@@ -72,7 +73,7 @@ class HistoricDataHandler(DataHandler):
         (sybmbol, datetime, open, low, high, close, volume).
         """
         for b in self.symbol_data[symbol]:
-            yield tuple([symbol, datetime.datetime.strptime(b[0], '%Y-%m-%d'), 
+            yield tuple([symbol, b[0].to_pydatetime().strftime('%Y-%m-%d'), 
                         b[1][0], b[1][1], b[1][2], b[1][3], b[1][4]])
 
     def get_latest_bars(self, symbol, N=1):
@@ -95,10 +96,13 @@ class HistoricDataHandler(DataHandler):
         for all symbols in the symbol list.
         """
         for s in self.symbol_list:
+            
             try:
                 bar = self._get_new_bar(s).next()
+            
             except StopIteration:
                 self.continue_backtest = False
+            
             else:
                 if bar is not None:
                     self.latest_symbol_data[s].append(bar)
