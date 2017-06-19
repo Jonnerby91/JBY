@@ -66,7 +66,7 @@ class BuyAndHoldStrategy(Strategy):
             bought[s] = False
         return bought
 
-  def calculate_signals(self, event):
+    def calculate_signals(self, event):
         """
         For "Buy and Hold" we generate a single signal per symbol
         and then no additional signals. This means we are 

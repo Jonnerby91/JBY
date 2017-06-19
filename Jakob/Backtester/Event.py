@@ -17,6 +17,7 @@ class SignalEvent(Event):
         self.symbol=symbol
         self.datetime=datetime
         self.signal_type= signal_type
+        self.strength = 1
 
 class OrderEvent(Event):
     # Sends an Order for execution

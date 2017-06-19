@@ -36,7 +36,7 @@ events=Queue(maxsize=0)
 
 symbol_list=['MSFT','AAPL','GOOG']
 
-date='2017-06-01'
+date='2017-06-10'
 HDH = HistoricDataHandler(events,symbol_list)
 HDH._open_quandl_data(date)
 HDH.update_bars()
@@ -47,8 +47,7 @@ event=events.get()
 strategy.calculate_signals(event)
 events.task_done()
 
-
-for k in range(0,100):
+while True:
     if events.empty():
         HDH.update_bars()
     event=events.get()
@@ -60,13 +59,18 @@ for k in range(0,100):
         print event.type, event.datetime, event.symbol, event.signal_type
         port.update_signal(event)
     if event.type == 'ORDER':
+
+qq
+
+q
+
+
         print event.type, event.symbol, event.order_type, event.quantity, event.direction
         execute.execute_order(event)
     if event.type == 'FILL':
         print event.timeindex
         port.update_fill(event)
     events.task_done()
-    print k
     
 
 #events.task_done()

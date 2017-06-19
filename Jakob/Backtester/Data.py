@@ -52,7 +52,7 @@ class HistoricDataHandler(DataHandler):
             comb_index = None
             for s in self.symbol_list:
                 # Load the CSV file with no header information, indexed on date
-                self.symbol_data[s] = quandl.get("WIKI/"+s,start_date='2014-10-10',end_date=date)
+                self.symbol_data[s] = quandl.get("WIKI/"+s,start_date=date,end_date='2017-06-16')
 
                 # Combine the index to pad forward values
                 if comb_index is None:
