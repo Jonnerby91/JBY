@@ -40,6 +40,7 @@ class HistoricDataHandler(DataHandler):
         self.symbol_data = {}
         self.latest_symbol_data = {}
         self.continue_backtest = True     
+        self.last_date={}
 
     def _open_quandl_data(self,date):
             """

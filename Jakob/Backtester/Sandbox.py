@@ -36,7 +36,7 @@ events=Queue(maxsize=0)
 
 symbol_list=['MSFT','AAPL','GOOG']
 
-date='2017-06-01'
+date='2017-06-10'
 HDH = HistoricDataHandler(events,symbol_list)
 HDH._open_quandl_data(date)
 HDH.update_bars()
@@ -47,15 +47,34 @@ event=events.get()
 strategy.calculate_signals(event)
 events.task_done()
 
+#HDH.update_bars()
 
+#for k in range(0,10):
+    #HDH.update_bars()
+    #print HDH.latest_symbol_data['MSFT']
+while HDH.continue_backtest==True:
+    try:
+        print HDH._get_new_bar('MSFT').next()
+    except StopIteration:
+        HDH.continue_backtest=False
+    print HDH.continue_backtest
+    #events.task_done()
+
+
+"""
 for k in range(0,100):
     if events.empty():
+        
         HDH.update_bars()
+        if HDH.latest_symbol_data['GOOG'][1][1] == old_date:
+            events.task_done()
+            print 'Task done'
+            break
     event=events.get()
     if event.type == 'MARKET':
          port.update_timeindex(event)
          port.create_equity_curve_dataframe()
-         print port.equity_curve
+        # print port.equity_curve
     if event.type == 'SIGNAL':
         print event.type, event.datetime, event.symbol, event.signal_type
         port.update_signal(event)
@@ -67,7 +86,8 @@ for k in range(0,100):
         port.update_fill(event)
     events.task_done()
     print k
-    
+    old_date=HDH.latest_symbol_data['MSFT'][1][1]
+"""
 
 #events.task_done()
 
