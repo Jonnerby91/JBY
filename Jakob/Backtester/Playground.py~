@@ -1,0 +1,7 @@
+import quandl 
+import pandas as pd
+import numpy as np
+from Features import SimpleFeatures
+quandl.ApiConfig.api_key = '4ZyHzmP1Hp73xkygPzzL' 
+
+hist_data = quandl.get("WIKI/MSFT",start_date=date,end_date='2017-06-16')

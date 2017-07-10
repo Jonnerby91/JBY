@@ -1,0 +1,34 @@
+from Data import FXDataHandler
+import Queue
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+events=Queue.Queue(maxsize=0)
+
+
+currency_list = ['EURUSD']
+
+FX = FXDataHandler(events,currency_list)
+
+FX._open_data()
+FX.update_bars()
+FX.update_bars()
+c=FX.get_latest_bars('EURUSD',2)
+print c
+
+#N=1
+
+#for i in range(0,N):
+ #   FX.update_bars()
+
+
+#FX.update_bars()
+#FX.update_bars()
+
+#b=FX.get_latest_bars('EURUSD',N)
+#d=np.array(b)
+
+#time = d[:,2]
+#plt.plot(d[:,3])
+#plt.show()
+

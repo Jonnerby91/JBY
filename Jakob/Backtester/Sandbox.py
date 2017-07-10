@@ -52,13 +52,6 @@ events.task_done()
 #for k in range(0,10):
     #HDH.update_bars()
     #print HDH.latest_symbol_data['MSFT']
-while HDH.continue_backtest==True:
-    try:
-        print HDH._get_new_bar('MSFT').next()
-    except StopIteration:
-        HDH.continue_backtest=False
-    print HDH.continue_backtest
-    #events.task_done()
 
 
 """

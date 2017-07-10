@@ -43,7 +43,7 @@ class NaivePortfolio(Portfolio):
     used to test simpler strategies such as BuyAndHoldStrategy.
     """
     
-    def __init__(self, bars, events, start_date, initial_capital=100000.0):
+    def __init__(self, bars, events, start_date, debug=0,initial_capital=100000.0):
         """
         Initialises the portfolio with bars and an event queue. 
         Also includes a starting datetime index and initial capital 
@@ -67,6 +67,7 @@ class NaivePortfolio(Portfolio):
         self.all_holdings = self.construct_all_holdings()
         self.current_holdings = self.construct_current_holdings()
         
+        self.debug = debug
 
     def construct_all_positions(self):
         """
@@ -132,7 +133,7 @@ class NaivePortfolio(Portfolio):
 
         for s in self.symbol_list:
             # Approximation to the real value
-            market_value = self.current_positions[s] * bars[s][0][5]
+            market_value = self.current_positions[s] * bars[s][0][2]
             dh[s] = market_value
             dh['total'] += market_value
 
@@ -173,12 +174,15 @@ class NaivePortfolio(Portfolio):
             fill_dir = -1
 
         # Update holdings list with new quantities
-        fill_cost = self.bars.get_latest_bars(fill.symbol)[0][5]  # Close price
+        fill_cost = self.bars.get_latest_bars(fill.symbol)[0][2]  # Close price
         cost = fill_dir * fill_cost * fill.quantity
         self.current_holdings[fill.symbol] += cost
         self.current_holdings['commission'] += fill.commission
         self.current_holdings['cash'] -= (cost + fill.commission)
         self.current_holdings['total'] -= (cost + fill.commission)
+        
+        if self.debug == 1:
+            print "Fill Cost:  ", cost
 
 
     def update_fill(self, event):
@@ -255,8 +259,8 @@ class NaivePortfolio(Portfolio):
         sharpe_ratio = create_sharpe_ratio(returns)
         max_dd, dd_duration = create_drawdowns(pnl)
 
-        stats = [("Total Return", "%0.2f%%" % ((total_return - 1.0) * 100.0)),
+        stats = [("Total Return", "%0.6f%%" % ((total_return - 1.0) * 100.0 * 500)),
                  ("Sharpe Ratio", "%0.2f" % sharpe_ratio),
-                 ("Max Drawdown", "%0.2f%%" % (max_dd * 100.0)),
+                 ("Max Drawdown", "%0.6f%%" % (max_dd * 100.0)),
                  ("Drawdown Duration", "%d" % dd_duration)]
         return stats

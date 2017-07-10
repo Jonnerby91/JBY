@@ -52,12 +52,13 @@ class FillEvent(Event):
         self.quantity = quantity
         self.direction = direction
         self.fill_cost = fill_cost
+        self.commission = 0
 
         # Calculate commission
-        if commission is None:
-            self.commission = self.calculate_ib_commission()
-        else:
-            self.commission = commission
+       # if commission is None:
+        #    self.commission = self.calculate_ib_commission()
+        #else:
+         #   self.commission = commission
 
     def calculate_ib_commission(self):
         """
